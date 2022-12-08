@@ -1,0 +1,70 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+void printLL(struct ListNode* head){
+    struct ListNode* current = head;
+    printf("\n");
+    while(current){
+        printf("%d ",current->val);
+        current = current -> next;
+    }
+    return;
+}
+
+struct ListNode* reverseList(struct ListNode* head){
+    struct ListNode* prevPtr = NULL;
+    struct ListNode* currPtr = head;
+    if(currPtr == NULL){
+        return NULL;
+    }
+    struct ListNode* nextPtr = currPtr->next;
+    while(nextPtr){
+        currPtr->next=prevPtr;
+        prevPtr=currPtr;
+        currPtr=nextPtr;
+        nextPtr=currPtr->next;
+    }
+    currPtr->next=prevPtr;
+    return currPtr;
+}
+
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
+    
+    // initial case
+    if(head == NULL || head -> next == NULL){
+        return NULL;
+    }
+
+    // if n == 1
+    if( n == 1){
+        struct ListNode* pointer = head;
+        while((pointer -> next -> next) != NULL){
+            pointer = pointer -> next;
+        }
+        pointer -> next = NULL;
+        return head;
+    }
+
+
+    //reverse the linkedlist
+    head = reverseList(head);
+
+    //delete the nth node
+    struct ListNode* pointer = head;
+    for(int i = 0 ; i < n-2; i++){
+        pointer = pointer -> next;
+    }
+    struct ListNode* nodeToBeDeleted = pointer->next;
+    pointer->next = nodeToBeDeleted->next;
+    free(nodeToBeDeleted);
+
+    //reverse the linkedlist
+    head = reverseList(head);
+
+    //return the answer
+    return head;
+}
