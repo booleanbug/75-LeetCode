@@ -1,0 +1,49 @@
+**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+bool hasCycle(struct ListNode *head) {
+
+    // NULL
+    struct ListNode* tortoise = head;
+    if(tortoise == NULL){
+        return 0;
+    }
+
+    struct ListNode* hare = tortoise->next;
+
+    // N1->NULL
+    if(hare == NULL){
+        return 0;
+    }
+
+    // N1->N1
+    if(hare == tortoise){
+        return 1;
+    }
+
+    // other cases
+    int flag;
+    while(1){
+        if(hare == tortoise){
+            flag = 1;
+            break;
+        }
+        if(hare == NULL || tortoise == NULL){
+            flag = 0;
+            break;
+        }
+        hare = hare -> next;
+        if(hare == NULL){
+            flag = 0;
+            break;
+        }else{
+            hare = hare -> next;
+        }
+        tortoise = tortoise -> next;
+    }
+    return flag;
+}
