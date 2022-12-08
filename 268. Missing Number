@@ -1,0 +1,14 @@
+int missingNumber(int* nums, int numsSize){
+    int requiredAns = 0;
+    int currentAns = nums[0];
+
+    for(int i = 1 ; i <= numsSize ; i++){
+        requiredAns = requiredAns ^ i;
+    }
+
+    for(int i = 1 ; i < numsSize ; i++){
+        currentAns = currentAns ^ nums[i];
+    }
+
+    return requiredAns ^ currentAns;
+}
