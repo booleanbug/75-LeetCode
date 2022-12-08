@@ -1,0 +1,106 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+// function for printing the linkedlist
+void printLL(struct ListNode* head){
+    struct ListNode* current = head;
+    printf("\n");
+    while(current){
+        printf("%d ",current->val);
+        current = current -> next;
+    }
+    return;
+}
+
+// function for reversing the linkedlist
+struct ListNode* reverseList(struct ListNode* head){
+    struct ListNode* prevPtr = NULL;
+    struct ListNode* currPtr = head;
+    if(currPtr == NULL){
+        return NULL;
+    }
+    struct ListNode* nextPtr = currPtr->next;
+    while(nextPtr){
+        currPtr->next=prevPtr;
+        prevPtr=currPtr;
+        currPtr=nextPtr;
+        nextPtr=currPtr->next;
+    }
+    currPtr->next=prevPtr;
+    return currPtr;
+}
+
+void reorderList(struct ListNode* head){
+
+    // construct straight linkedlist
+    struct ListNode* sHead = NULL;
+    struct ListNode* currentS;
+    struct ListNode* current = head;
+    int count = 0;
+    while(current){
+        struct ListNode* nn1 = (struct ListNode*) malloc(sizeof(struct ListNode));
+        nn1->next = NULL;
+        nn1->val = current->val;
+        if(sHead == NULL){
+            sHead = nn1;
+            currentS = sHead;
+        }else{
+            currentS->next = nn1;
+            currentS = currentS -> next;
+        }
+        current = current -> next;
+        count++;
+    }
+
+    // construct reverse linkedlist
+    struct ListNode* rHead = NULL;
+    struct ListNode* currentR;
+    current = head;
+    while(current){
+        struct ListNode* nn1 = (struct ListNode*) malloc(sizeof(struct ListNode));
+        nn1->next = NULL;
+        nn1->val = current->val;
+        if(rHead == NULL){
+            rHead = nn1;
+            currentR = rHead;
+        }else{
+            currentR->next = nn1;
+            currentR = currentR -> next;
+        }
+        current = current -> next;
+    }
+    rHead = reverseList(rHead);
+
+    // assign the pointers necessary for synchronizing the two linkedlist
+    struct ListNode* s1 = sHead;
+    struct ListNode* s2 = s1->next;
+    struct ListNode* r1 = rHead;
+    struct ListNode* r2 = r1->next;
+
+    while(1){
+        s1->next = r1;
+        r1->next = s2;
+        if(r1->next == NULL){
+            break;
+        }
+        s1 = s2;
+        r1 = r2;
+        s2 = s1->next;
+        r2 = r2->next;
+    }
+    
+    current = sHead;
+    s1 = head;
+    for(int i = 0 ; i < count ; i++){
+        s1->val = current->val;
+        s1 = s1 -> next;
+        current = current -> next;
+    }
+
+    return;
+}
