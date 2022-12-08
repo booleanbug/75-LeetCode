@@ -1,0 +1,22 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+
+int hammingWeight(int n){
+    int ans = 0;
+    while(n){
+        ans += (n & 1);
+        n = n >> 1;
+    }
+    return ans;
+}
+
+int* countBits(int n, int* returnSize){
+    //iterate for each number and then calculate the hamming weight for each number
+    int* ans = (int*) malloc(sizeof(int)*(n+1));
+    for(int i = 0 ; i <= n ; i++){
+        ans[i] = hammingWeight(i);
+    }
+    *returnSize = n+1;
+    return ans;
+}
