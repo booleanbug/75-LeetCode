@@ -1,0 +1,10 @@
+//writeuplink -> https://www.blogger.com/u/1/blog/post/edit/1623384195807517943/9033259487060796664
+
+int hammingWeight(uint32_t n) {
+    int ans = 0;
+    while(n){
+        ans+=(n&1);
+        n = n >> 1;
+    }
+    return ans;
+}
